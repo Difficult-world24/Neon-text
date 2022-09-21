@@ -131,7 +131,7 @@ function Canvas(props) {
         variant="span"
         sx={{
           position: "absolute",
-          border: "1px dashed white",
+        //   border: "1px dashed white",
         }}
       >
         {pictureText}
