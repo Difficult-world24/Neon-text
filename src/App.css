@@ -1,16 +1,92 @@
+@import url("https://fonts.googleapis.com/css2?family=Lora:ital@1&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lora:ital@1&family=Roboto+Mono:ital@1&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Dancing+Script&family=Lora:ital@1&family=Roboto+Mono:ital@1&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Marck+Script&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Bad+Script&display=swap");
+
 .neonText {
   color: #fff !important;
-  text-shadow:
-      0 0 7px #fff,
-      0 0 10px #fff,
-      0 0 21px #fff,
-      0 0 42px #0fa,
-      0 0 82px #0fa,
-      0 0 92px #0fa,
-      0 0 102px #0fa,
-      0 0 151px #0fa !important;
+  user-select: none;
+  font-size: 3rem !important;
+  text-shadow: 0 0 7px #fff, 0 0 10px #fff, 0 0 21px #fff, 0 0 42px #0fa,
+    0 0 82px #0fa, 0 0 92px #0fa, 0 0 102px #0fa, 0 0 151px #0fa !important;
+  word-wrap: break-word !important;
+  height: auto;
+  margin: 5px !important;
 }
 
 img {
   border-radius: 5px;
+}
+
+/* Fonts */
+.Lora-Italic {
+  font-family: "Lora", sans-serif !important;
+}
+
+.Marc-Script {
+  font-family: "Marc Script", sans-serif !important;
+}
+.Dancing-Script {
+  font-family: "Dancing Script", sans-serif !important;
+}
+
+.Bad-Script {
+  font-family: "Bad Script", sans-serif !important;
+}
+
+/* Colors */
+.IceBlue {
+  text-shadow: rgb(255, 255, 255) 0px 0px 5px, rgb(255, 255, 255) 0px 0px 10px,
+    rgb(45, 204, 211) 0px 0px 20px, rgb(45, 204, 211) 0px 0px 30px,
+    rgb(45, 204, 211) 0px 0px 40px, rgb(45, 204, 211) 0px 0px 55px,
+    rgb(45, 204, 211) 0px 0px 75px !important;
+}
+
+.PurpleHaze {
+  /* color: rgb(155,38,182) !important; */
+  text-shadow: rgb(255 255 255) 0px 0px 5px, rgb(255 255 255) 0px 0px 10px,
+    rgb(155 38 182) 0px 0px 20px, rgb(155 38 182) 0px 0px 30px,
+    rgb(155 38 182) 0px 0px 40px, rgb(155 38 182) 0px 0px 55px,
+    rgb(155 38 182) 0px 0px 75px !important;
+}
+
+.HotPink {
+  color: rgb(220, 134, 153) !important;
+  text-shadow: rgb(255 255 255) 0px 0px 5px, rgb(255 255 255) 0px 0px 10px,
+    rgb(220 134 153) 0px 0px 20px, rgb(220 134 153) 0px 0px 30px,
+    rgb(220 134 153) 0px 0px 40px, rgb(220 134 153) 0px 0px 55px,
+    rgb(220 134 153) 0px 0px 75px !important;
+}
+
+.GreenLime {
+  /* color: rgb(38 208 124) !important; */
+  text-shadow: rgb(255 255 255) 0px 0px 5px, rgb(255 255 255) 0px 0px 10px,
+    rgb(38 208 124) 0px 0px 20px, rgb(38 208 124) 0px 0px 30px,
+    rgb(38 208 124) 0px 0px 40px, rgb(38 208 124) 0px 0px 55px,
+    rgb(38 208 124) 0px 0px 75px !important;
+}
+
+/* FontSize */
+.small {
+  font-size: 20px !important;
+}
+
+.medium {
+  font-size: 30px !important;
+}
+.large {
+  font-size: 40px !important;
+}
+/* Alignment */
+
+.start {
+  text-align: start !important;
+}
+
+.center {
+  text-align: center !important;
+}
+.end {
+  text-align: end !important;
 }
