@@ -1,6 +1,5 @@
 import React from 'react';
 import MuiButton from '@mui/material/Button';
-import CircularProgress from '@mui/material/CircularProgress';
 import useStyles from './style';
 
 const Button = ({

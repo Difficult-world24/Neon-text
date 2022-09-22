@@ -104,7 +104,7 @@ const Login = () => {
   const onSubmit = (e) => {
     e.preventDefault();
     setDisableLoginBtn(true);
-    if (email == 'test@mail.com' && password == '1234') {
+    if (email === 'test@mail.com' && password === '1234') {
       setTimeout(() => {
         const authToken =
           'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiZmNmNTA3ZmMyNWEyYzZiY2IxZDVlMGM5ZDViNTIzZjc2NzA1OWE3MmQxNDZiMDRmYmFhMGU4MzZjYmU1MjY0OTRiMmMwNDY1ZWJlMmQ5NTAiLCJpYXQiOjE2NjM3NTM4MjksIm5iZiI6MTY2Mzc1MzgyOSwiZXhwIjoxNjk1Mjg5ODI5LCJzdWIiOiI1NzIwNjAiLCJzY29wZXMiOltdfQ.a_5B6TSxRKYEC-N_QKJ7h-Bew2ASbotnNfYgp64SRg8MG1q4JJuCIV5n4AhIjOogTcaP4VJmsZi-j-rzaiGrhAyETMcSAgHRIMf5xk_NPNWC-6IIW9JQmvFbIcYswkwHJltorHkh8PhCMi_gAQYRscmzX7Y16OpOb6HAiZ8xNZQDOkrCeU78TgSAcq9sJZL80OFdtevKSkez5NWsO82bRwWYyI5mEjBLbSonTvifqcR_wmQ0DytjAKAEd3STTBTGzXOAMHPhdZcnwgL_Gz6Q7N3p8gOU759GHNTrmVGkdk_dTk4szVsDB2bq395heZjsBApcOzLbGncbmmPMfBRWoHri8D0mU7DP4QL434GHakNQwURmdOXOkxGeutzrtCVxQB3rh9549CPaKuN1tNTtUr3hwdYnbewvDTUJ-rr7uroW5QpsmExTLz92m0WaJZwkrrMernjhmBiVBhgyb4fh5Jadu65K7Lb0gCS5SDO9y-6YnRDF-oMzTSlw6LSbpTbOvIZixJXFGcDTlymW-gkNdV9Ao4QHbWl0pga12NOfQNzE6Kax5ntrKZ5MVWdA6bqqJ8XOw_SF0kj5C3JxZhwca3f58W4leKMK5v8FxtaUn1UgaN47PjqqMZ6PxTTmz-SfXI2ffomYQ5JFg-hJpTpNojiwgIZDXlmaOgNP1zbM0YU';
@@ -143,12 +143,12 @@ const Login = () => {
                       onSubmit={onSubmit}
                       ref={(r) => (formRef.current = r)}
                     >
-                      <Box mb={2} display='flex'>
+                      <Box mb={2} display='flex' sx={{display:'flex', justifyContent:'center'}}>
                         <div className='heading'>
-                          <Box mb={4}>
-                            {/* <img src={images.app.logo} width="240" /> */}
+                          <Box mb={4} >
+                            <img alt='Brnad' src={"https://cdn-fmclc.nitrocdn.com/uMyyDaTeGmjluEknOujUvYWGFMpSwciQ/assets/static/optimized/rev-7f1fbe3/wp-content/themes/indy-sign-factory/img/logo.png"} width="240" />
                           </Box>
-                          <Typography variant='h3'>Login</Typography>
+                          {/* <Typography variant='h3'>Login</Typography> */}
                         </div>
                       </Box>
                       <div className={classes.formWrapper}>
@@ -225,7 +225,6 @@ const Login = () => {
                           Forget Password
                         </Link>
                         <a
-                          //   href={}
                           className={classes.forgotPassword}
                           target='_blank'
                         >
