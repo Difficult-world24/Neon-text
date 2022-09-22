@@ -1,17 +1,9 @@
-import { Paper, Typography, Box } from "@mui/material";
+import {  Typography, Box } from "@mui/material";
 import React from "react";
 import interact from "interactjs";
-import { TurnedIn } from "@mui/icons-material";
 
 const restrictToParent = interact.modifiers.restrictRect({
   restriction: "parent",
-  //   elementRect:{
-
-  //   top:5,
-  //   left:5,
-  //   bottom:5,
-  //   right:5
-  //   }
 });
 
 const position = { x: 0, y: 0 };
@@ -121,6 +113,8 @@ function Canvas(props) {
       sx={{
         width,
         height,
+        maxWidth:875,
+        maxHeight:453
       }}
       className="bgCanvas"
     >
@@ -131,7 +125,7 @@ function Canvas(props) {
         variant="span"
         sx={{
           position: "absolute",
-        //   border: "1px dashed white",
+          maxWidth:317
         }}
       >
         {pictureText}

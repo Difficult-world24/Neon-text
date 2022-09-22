@@ -1,4 +1,4 @@
-import { ThemeProvider,createTheme } from '@mui/material';
+// import { ThemeProvider,createTheme } from '@mui/material';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
@@ -6,11 +6,11 @@ import reportWebVitals from './reportWebVitals';
 import './index.css'
 import { Box } from '@mui/system';
 
-const darkTheme = createTheme({
-  palette: {
-    mode: 'light',
-  },
-});
+// const darkTheme = createTheme({
+//   palette: {
+//     mode: 'light',
+//   },
+// });
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

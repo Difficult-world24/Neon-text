@@ -7,11 +7,10 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import LightbulbIcon from "@mui/icons-material/Lightbulb";
 
 function NeonAccordion(props) {
   const [expanded, setExpanded] = useState(false);
-  const { options, optionToggle, accordionTitle,changeButton } = props;
+  const { options, optionToggle, accordionTitle,changeButton,buttonContained } = props;
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
@@ -30,16 +29,17 @@ function NeonAccordion(props) {
         >
           <Typography>{accordionTitle}</Typography>
         </AccordionSummary>
-        <AccordionDetails>
+        <AccordionDetails >
           {options.map((elem, index) => (
             <Button
-              className={changeButton && elem}
+              sx={{margin:1}}
+              className={changeButton && elem.className}
               color={"secondary"}
               key={`${accordionTitle}-${index}`}
-              onClick={() => optionToggle(elem)}
-              variant="text"
+              onClick={() => optionToggle(elem.className)}
+              variant={buttonContained ? 'contained' : 'text'}
             >
-              {elem}
+              {elem.title}
               {/* <LightbulbIcon className={elem}/> */}
             </Button>
           ))}

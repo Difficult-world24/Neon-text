@@ -11,14 +11,73 @@ import Canvas from "./Canvas";
 
 import "./App.css";
 
+// const fontsOptions = [
+//   "Lora-Italic",
+//   "Marc-Script",
+//   "Dancing-Script",
+//   "Bad-Script",
+// ];
+
+
 const fontsOptions = [
-  "Lora-Italic",
-  "Marc-Script",
-  "Dancing-Script",
-  "Bad-Script",
+  {
+    title:'Lora-Italic',
+    className:'Lora-Italic'
+  },
+
+  {
+    title:'Marc-Script',
+    className:'Marc-Script'
+  },
+  {
+    title:'Dancing-Script',
+    className:'Dancing-Script'
+  },
+  {
+    title:'Bad-Script',
+    className:'Bad-Script'
+  },
+
 ];
-const colorsOptions = ["IceBlue", "PurpleHaze", "HotPink", "GreenLime"];
-const signSizeOptions = ['small','medium','large']
+
+
+const colorsOptions = [
+  {
+    title:'IceBlue',
+    className:'IceBlue'
+  },
+  {
+    title:'PurpleHaze',
+    className:'PurpleHaze'
+  },
+  {
+    title:'HotPink',
+    className:'HotPink'
+  },
+  {
+    title:'GreenLime',
+    className:'GreenLime'
+  },
+];
+
+const signSizeOptions = [
+  {
+    title:'Small',
+    className:'text-20'
+  },
+  {
+    title:'Medium',
+    className:'text-30'
+  },
+  {
+    title:'Large',
+    className:'text-40'
+  },
+  {
+    title:'Extra-Large',
+    className:'text-45'
+  },
+]
 
 function App() {
   const [pictureText, setPictureText] = useState("Hello World");
@@ -29,7 +88,6 @@ function App() {
   const [canvasBackground, setCanvasBackground] = useState(
     "https://wallpapercave.com/wp/wp6852847.jpg"
   );
-
   const inputRef = useRef(null);
 
 
@@ -38,33 +96,15 @@ function App() {
     if (!fileObj) {
       return;
     }
-
-    console.log('fileObj is', fileObj);
-
-    // 👇️ reset file input
     event.target.value = null;
 
-    // 👇️ is now empty
-    console.log(event.target.files);
-
-    // 👇️ can still access file object here
     setCanvasBackground(URL.createObjectURL(fileObj));
-    // setCanvasBackground(fileObj)
-    console.log(fileObj.name);
   };
 
   const handleInputChange = (evt) => {
     const text = evt.target.value;
     setPictureText(text);
   };
-
-  // const handleFontChange = (evt, selectedOption) => {
-  //   setFontStyle(selectedOption);
-  // };
-
-  // const handleColorChange = (evt, selectedOption) => {
-  //   setTextColor(selectedOption);
-  // };
 
   return (
     <Box
@@ -105,7 +145,6 @@ function App() {
             inputProps={{ maxLength: 27 }}
             variant="outlined"
             multiline
-            // helperText={`Max Character Length is 27.`}
           />
           <Stack direction={"row"} alignItems={'center'} justifyContent={'space-between'}>
             <Typography variant="subtitle1" >Max Character Length is 27</Typography>
@@ -139,6 +178,7 @@ function App() {
             options={signSizeOptions}
             optionToggle={setSignSize}
             accordionTitle="Size"
+            buttonContained
           />
 
           {/* <NeonAccordion
