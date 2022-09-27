@@ -23,7 +23,7 @@ interact(".ghost")
         // update the element's style
         target.style.width = event.rect.width + "px";
         target.style.height = event.rect.height + "px";
-
+        // target.style.fontSize = '100%'
         // translate when resizing from top or left edges
         x += event.deltaRect.left;
         y += event.deltaRect.top;
@@ -33,6 +33,10 @@ interact(".ghost")
         target.setAttribute("data-x", x);
         target.setAttribute("data-y", y);
       },
+     end(event) {
+      event.target.style.height = 'auto'
+      // event.target.style.fontSize= '100%'
+     }
     },
     modifiers: [
       // keep the edges inside the parent
@@ -46,7 +50,7 @@ interact(".ghost")
       }),
     ],
 
-    inertia: true,
+    // inertia: true,
   })
   .draggable({
     modifiers: [restrictToParent],
@@ -122,22 +126,24 @@ function Canvas(props) {
       }}
       className="bgCanvas"
     >
-      <Typography textAlign={"center"} sx={{marginBottom:'5px'}}>Select corners to resize the canvas dynamically</Typography>
 
       <Typography
         className={`ghost neonText ${textAlignment} ${fontStyle} ${textColor} ${signSize}`}
         variant="span"
         sx={{
           position: "absolute",
-          maxWidth: 317,
+          fontSize:'8rem',
+          // maxWidth: 317,
           WebkitTextStrokeColor: `${strokeColor}`,
           WebkitTextStrokeWidth: `${strokeLength}px`,
         }}
       >
+        
         {pictureText}
       </Typography>
       <img width={"100%"} draggable="off" alt="Canvas" src={canvasBackground} />
       {/* </Paper> */}
+      <Typography textAlign={"center"} sx={{marginBottom:'5px'}}>Select corners to resize the canvas dynamically</Typography>
       <Grid
       container
         spacing={2}
@@ -168,6 +174,7 @@ function Canvas(props) {
           inputProps={{ min: "300", max: "800" }}
         />
         </Grid>
+
       </Grid>
     </Box>
   );

@@ -151,6 +151,7 @@ function Home() {
               label="Text"
               inputProps={{ maxLength: 27 }}
               variant="outlined"
+              helperText={`${27 - pictureText.length} Chracters Left.`}
               multiline
             />
             <Stack
