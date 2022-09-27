@@ -161,6 +161,9 @@ function Home() {
               <Typography variant="subtitle1">
                 Max Character Length is 27
               </Typography>
+              {/* <Typography sx={{marginLeft:'5px'}} variant="subtitle1">
+                Stroke Length is <b>{strokeLength}</b>px
+              </Typography> */}
               <Box>
                 <Button onClick={() => setTextAlign("start")}>
                   <FormatAlignLeftIcon />
