@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=`, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/interact.js/1.10.17/interact.min.js"></script>
+    <style>
+      * {
+        box-sizing: border-box;
+        padding: 0px;
+        margin: 0px;
+      }
+      body {
+        padding: 16px;
+      }
+      .parent {
+        width: 500px;
+        height: 500px;
+        /* background: gray; */
+      }
+    </style>
+  </head>
+  <body>
+    <div style="display: flex" class="parent">
+      <div id="input"></div>
+      <!-- <div
+        id="test_output"
+        style="width: 4mm; height: 72mm; background: red; margin-left: 20px"
+      ></div> -->
+    </div>
+  </body>
+
+  <script>
+    fetch("http://localhost:3000")
+      .then((r) => r.json())
+      .then((data) => {
+        document.querySelector("#input").innerHTML = data.svg;
+        const m = data.metric;
+        console.log("metrics", m);
+        var svg = document.querySelector("svg");
+        // svg.removeAttribute("width");
+        // svg.removeAttribute("height");
+        // svg.setAttribute("viewBox", `0 0 ${m.width} ${m.height}`);
+        // m.width = m.width * 0.2645833333;
+        // m.height = m.height * 0.2645833333;
+        // svg.style.width = `${m.width}px`;
+        // svg.style.height = `${m.height}px`;
+        svg.classList.add("svg");
+        svg.style.border = "solid grey 1px";
+        // begin
+        // const svg = document.querySelector('svg');
+
+        const { xMin, xMax, yMin, yMax } = [...svg.children].reduce(
+          (acc, el) => {
+            const { x, y, width, height } = el.getBBox();
+            if (!acc.xMin || x < acc.xMin) acc.xMin = x;
+            if (!acc.xMax || x + width > acc.xMax) acc.xMax = x + width;
+            if (!acc.yMin || y < acc.yMin) acc.yMin = y;
+            if (!acc.yMax || y + height > acc.yMax) acc.yMax = y + height;
+            return acc;
+          },
+          {}
+        );
+
+        const viewbox = `${xMin} ${yMin} ${xMax - xMin} ${yMax - yMin}`;
+        svg.style.width = `${xMax - xMin}pt`;
+        svg.style.height = `${yMax - yMin}pt`;
+        svg.setAttribute("viewBox", viewbox);
+
+        // end
+
+        var element = document.querySelector("svg path");
+        //   element.setAttribute("stroke-width", "2");
+        var pathLength = element.getTotalLength();
+        console.log("pathLength", pathLength, {
+          calclulated: (pathLength - 10.959999999999997) / 2,
+        });
+
+        setUp();
+      });
+
+    function setUp() {
+      interact(".svg").resizable({
+        // resize from all edges and corners
+        edges: { left: true, right: true, bottom: true, top: true },
+
+        listeners: {
+          move(event) {
+            var target = event.target;
+            var x = parseFloat(target.getAttribute("data-x")) || 0;
+            var y = parseFloat(target.getAttribute("data-y")) || 0;
+
+            // update the element's style
+            target.style.width = event.rect.width + "pt";
+            target.style.height = event.rect.height + "pt";
+            //   target.setAttribute(
+            //     "viewBox",
+            //     `0 0 ${event.rect.width} ${event.rect.height}`
+            //   );
+            // translate when resizing from top or left edges
+            //   x += event.deltaRect.left;
+            //   y += event.deltaRect.top;
+
+            //   target.style.transform = "translate(" + x + "px," + y + "px)";
+
+            target.setAttribute("data-x", x);
+            target.setAttribute("data-y", y);
+            //   target.textContent =
+            //     Math.round(event.rect.width) +
+            //     "\u00D7" +
+            //     Math.round(event.rect.height);
+
+            const { xMin, xMax, yMin, yMax } = [...target.children].reduce(
+              (acc, el) => {
+                const { x, y, width, height } = el.getBBox();
+                if (!acc.xMin || x < acc.xMin) acc.xMin = x;
+                if (!acc.xMax || x + width > acc.xMax) acc.xMax = x + width;
+                if (!acc.yMin || y < acc.yMin) acc.yMin = y;
+                if (!acc.yMax || y + height > acc.yMax) acc.yMax = y + height;
+                return acc;
+              },
+              {}
+            );
+
+            const viewbox = `${xMin} ${yMin} ${event.rect.width} ${event.rect.height}`;
+
+            target.setAttribute("viewBox", viewbox);
+            console.log(
+              "TotalLeng",
+              target.querySelector("path").getTotalLength() / 2
+            );
+          },
+        },
+        modifiers: [
+          // keep the edges inside the parent
+          // interact.modifiers.restrictEdges({
+          //   outer: "parent",
+          // }),
+          interact.modifiers.aspectRatio({
+            ratio: 132 / 264,
+          }),
+
+          // minimum size
+          // interact.modifiers.restrictSize({
+          //   min: { width: 100, height: 50 },
+          // }),
+        ],
+
+        //   inertia: true,
+      });
+      // .draggable({
+      //   listeners: { move: window.dragMoveListener },
+      //   inertia: true,
+      //   // modifiers: [
+      //   //   interact.modifiers.restrictRect({
+      //   //     restriction: "parent",
+      //   //     endOnly: true,
+      //   //   }),
+      //   // ],
+      // });
+    }
+  </script>
+</html>
