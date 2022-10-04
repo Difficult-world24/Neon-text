@@ -4,8 +4,10 @@ import Home from "./screens/Home";
 import Login from "./screens/Login";
 import PrivateRoute from "./Routes/PrivateRoute";
 import { SignBoard } from "./components/SignBoard";
+import { CanvasExample } from "./components/canvasExample";
 
 function App() {
+  // return <CanvasExample />;
   return <SignBoard />;
   return (
     <BrowserRouter>

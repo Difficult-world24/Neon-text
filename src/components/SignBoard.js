@@ -25,7 +25,8 @@ function convertPointToUnits(point, unit) {
 }
 
 function convertPixelsToUnit(value) {
-  return value * 0.75;
+  //   return value;
+  return value * 0.7;
 }
 
 function convertUnitToPoint(point, unit) {
@@ -51,8 +52,8 @@ export const SignBoard = () => {
   });
 
   const [textSize, setTextSize] = useState({
-    width: "80",
-    height: "45",
+    width: "102.98",
+    height: "84.98",
   });
 
   const [selectedUnit, setSlectedUnit] = useState("mm");
@@ -157,7 +158,31 @@ export const SignBoard = () => {
           },
         },
       });
+    getText();
   }, []);
+
+  function getText() {
+    let input = document.querySelector(".input").value;
+    fetch(`http://localhost:3001/?text=${input}`)
+      .then((j) => j.json())
+      .then((data) => {
+        const target = document.querySelector("svg");
+        target.innerHTML = data.path;
+        const { xMin, xMax, yMin, yMax } = [...target.children].reduce(
+          (acc, el) => {
+            const { x, y, width, height } = el.getBBox();
+            if (!acc.xMin || x < acc.xMin) acc.xMin = x;
+            if (!acc.xMax || x + width > acc.xMax) acc.xMax = x + width;
+            if (!acc.yMin || y < acc.yMin) acc.yMin = y;
+            if (!acc.yMax || y + height > acc.yMax) acc.yMax = y + height;
+            return acc;
+          },
+          {}
+        );
+        const viewbox = `${xMin} ${yMin} ${xMax - xMin} ${yMax - yMin}`;
+        target.setAttribute("viewBox", viewbox);
+      });
+  }
 
   return (
     <>
@@ -256,31 +281,10 @@ export const SignBoard = () => {
         />
       </div>
       <div>
-        <input className="input" />
+        <input className="input" value="||" />
         <button
           onClick={() => {
-            const input = document.querySelector(".input").value;
-
-            fetch(`http://localhost:3001/?text=${input}`)
-              .then((j) => j.json())
-              .then((data) => {
-                const target = document.querySelector("svg");
-                target.innerHTML = data.path;
-                const { xMin, xMax, yMin, yMax } = [...target.children].reduce(
-                  (acc, el) => {
-                    const { x, y, width, height } = el.getBBox();
-                    if (!acc.xMin || x < acc.xMin) acc.xMin = x;
-                    if (!acc.xMax || x + width > acc.xMax) acc.xMax = x + width;
-                    if (!acc.yMin || y < acc.yMin) acc.yMin = y;
-                    if (!acc.yMax || y + height > acc.yMax)
-                      acc.yMax = y + height;
-                    return acc;
-                  },
-                  {}
-                );
-                const viewbox = `${xMin} ${yMin} ${xMax - xMin} ${yMax - yMin}`;
-                target.setAttribute("viewBox", viewbox);
-              });
+            getText();
           }}
         >
           Add Text
@@ -327,6 +331,8 @@ export const SignBoard = () => {
                    e.querySelector("path").getTotalLength() / 2,
                    selectedUnit
                  )}${selectedUnit}
+,
+                 ${e.querySelector("path").getTotalLength() / 2}pt
                  `;
 
                   e.appendChild(stats);
@@ -359,10 +365,6 @@ export const SignBoard = () => {
           Get Report
         </button>
         <div className="report"></div>
-      </div>
-
-      <div>
-        <button>Print Text in Size</button>
       </div>
     </>
   );
