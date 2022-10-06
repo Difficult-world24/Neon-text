@@ -4,15 +4,22 @@
 @import url("https://fonts.googleapis.com/css2?family=Marck+Script&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Bad+Script&display=swap");
 
+/* .ghost {
+  transform: scale(1.5);
+} */
+
 .neonText {
   color: #fff !important;
   user-select: none;
+  letter-spacing: 5px;
+  line-height: 3;
   font-size: 5rem !important;
   text-shadow: 0 0 7px #fff, 0 0 10px #fff, 0 0 21px #fff, 0 0 42px #0fa,
     0 0 82px #0fa, 0 0 92px #0fa, 0 0 102px #0fa, 0 0 151px #0fa !important;
   word-wrap: break-word !important;
   height: auto;
   max-height: 700px;
+  resize: horizontal !important;
   margin: 5px !important;
 }
 
@@ -72,18 +79,18 @@ img {
 
 /* FontSize */
 .text-20 {
-  font-size: 20px !important;
+  font-size: 49px !important;
 }
 
 .text-30 {
-  font-size: 30px !important;
+  font-size: 59px !important;
 }
 .text-40 {
-  font-size: 40px !important;
+  font-size: 70px !important;
 }
 
 .text-45 {
-  font-size: 55px !important;
+  font-size: 84px !important;
 }
 /* Alignment */
 

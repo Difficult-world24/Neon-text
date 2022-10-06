@@ -8,7 +8,7 @@ import { CanvasExample } from "./components/canvasExample";
 
 function App() {
   // return <CanvasExample />;
-  return <SignBoard />;
+  // return <SignBoard />;
   return (
     <BrowserRouter>
       <Routes>

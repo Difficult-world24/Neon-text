@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef,useEffect } from "react";
 import {
   TextField,
   Button,
@@ -15,6 +15,10 @@ import AppBar from "../components/AppBar";
 import Canvas from "../Canvas";
 import "../App.css";
 import { TwitterPicker } from "react-color";
+import { useScreenshot } from "use-react-screenshot";
+// import { useScreenshot } from "use-screenshot-hook";
+
+
 
 const fontsOptions = [
   {
@@ -22,10 +26,6 @@ const fontsOptions = [
     className: "Lora-Italic",
   },
 
-  {
-    title: "Marc-Script",
-    className: "Marc-Script",
-  },
   {
     title: "Dancing-Script",
     className: "Dancing-Script",
@@ -75,17 +75,52 @@ const signSizeOptions = [
 ];
 
 function Home() {
-  const [pictureText, setPictureText] = useState("Hello World");
+  const [pictureText, setPictureText] = useState("Hello There!");
   const [textAlign, setTextAlign] = useState("start");
   const [strokeColor, setStrokeColor] = useState("#4caf40");
   const [strokeLength, setStrokeLength] = useState(0);
-  const [textColor, setTextColor] = useState(colorsOptions[0]);
-  const [fontStyle, setFontStyle] = useState(fontsOptions[0]);
-  const [signSize, setSignSize] = useState(signSizeOptions[0]);
+  const [textColor, setTextColor] = useState(colorsOptions[0].className);
+  const [fontStyle, setFontStyle] = useState(fontsOptions[0].className);
+  const [signSize, setSignSize] = useState(signSizeOptions[0].className);
+  const [previewSrc, setPreview] = useState('');
   const [canvasBackground, setCanvasBackground] = useState(
     "https://images.unsplash.com/photo-1495578942200-c5f5d2137def?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2950&q=80"
   );
+  const [image, takeScreenshot] = useScreenshot()
+
+  useEffect(() => {
+    takeScreenshot(ref.current);
+  }, [textAlign,textColor,fontStyle,signSize]);
+
+  const getImage = () =>{
+
+    window.scrollTo(0, document.body.scrollHeight);
+   takeScreenshot(ref.current)
+      sendImageToServer(image)
+      .then(async res=> {
+       let base64 =  await res.text()
+       setPreview('data:application/pdf;base64,' + base64)
+
+   })
+    .catch(err=> console.log(err))
+  }
+  async function sendImageToServer(Base64Url){
+    const response =  await fetch('http://127.0.0.1:5001/', {
+      method: 'POST',
+      // mode:'no-cors',
+      // headers: {
+      //   'Accept': 'application/json, text/plain, */*',
+      //   'Content-Type': 'application/json',
+      //   'Accept-Encoding': '*',
+      //   // 'Access-Control-Allow-Origin': '*'
+      // },
+      body: JSON.stringify({neonText:image})
+    })
+    return response
+   }
+
   const inputRef = useRef(null);
+  const ref = useRef();
 
   const handleFileChange = (event) => {
     const fileObj = event.target.files && event.target.files[0];
@@ -109,7 +144,7 @@ function Home() {
       direction="column"
       alignItems="center"
       justifyContent="center"
-      style={{ minHeight: "100vh" }}
+      style={{ minHeight: "100vh" ,paddingTop:'8rem'}}
     >
       <AppBar />
       <Box
@@ -132,6 +167,7 @@ function Home() {
           spacing={2}
         >
           <Canvas
+            contentRef={ref}
             fontStyle={fontStyle}
             textColor={textColor}
             signSize={signSize}
@@ -140,6 +176,9 @@ function Home() {
             textAlignment={textAlign}
             strokeColor={strokeColor}
             strokeLength={strokeLength}
+            previewImage={
+            <img src={previewSrc} />
+            }
           />
           <Stack direction="column" spacing={2}>
             {/* Picture Text */}
@@ -219,12 +258,12 @@ function Home() {
               changeButton
             />
 
-            <NeonAccordion
+            {/* <NeonAccordion
               options={signSizeOptions}
               optionToggle={setSignSize}
               accordionTitle="Size"
               buttonContained
-            />
+            /> */}
 
             {/* <NeonAccordion
             options={['40%','80%']}
@@ -244,6 +283,13 @@ function Home() {
               color="info"
             >
               Change Background <OpenInNewIcon />
+            </Button>
+            <Button
+              variant="contained"
+              onClick={getImage}
+              color="info"
+            >
+             Letters Dimensions 
             </Button>
           </Stack>
         </Stack>

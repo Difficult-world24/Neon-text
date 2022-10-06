@@ -158,7 +158,7 @@ export const SignBoard = () => {
           },
         },
       });
-    getText();
+    // getText();
   }, []);
 
   function getText() {
