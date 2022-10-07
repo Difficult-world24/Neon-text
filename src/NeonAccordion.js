@@ -10,7 +10,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 function NeonAccordion(props) {
   const [expanded, setExpanded] = useState(false);
-  const { options, optionToggle, accordionTitle,changeButton,buttonContained } = props;
+  const { options, optionToggle, accordionTitle,changeButton,buttonContained, useKey="" } = props;
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
@@ -36,7 +36,7 @@ function NeonAccordion(props) {
               className={changeButton && elem.className}
               color={"secondary"}
               key={`${accordionTitle}-${index}`}
-              onClick={() => optionToggle(elem.className)}
+              onClick={() => optionToggle(useKey ? elem[useKey]: elem.className)}
               variant={buttonContained ? 'contained' : 'text'}
             >
               {elem.title}

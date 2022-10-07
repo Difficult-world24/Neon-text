@@ -1,10 +1,9 @@
 import { Typography, Box, TextField, Grid } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import interact from "interactjs";
-var ReactFitText = require('react-fittext');
 
-const maxWidth = "500pt";
-const maxheight = "360pt";
+// const maxWidth = "500pt";
+// const maxheight = "360pt";
 
 function convertPointToUnits(point, unit) {
   let size = point;
@@ -54,12 +53,44 @@ const position = { x: 0, y: 0 };
 
 function Canvas(props) {
 
+  const {
+    fontStyle,
+    textColor,
+    pictureText,
+    canvasBackground,
+    textAlignment,
+    strokeLength,
+    strokeColor,
+    contentRef,
+    fontSize,
+    selectedUnit,
+    setSelectedUnit,
+  dimension,
+    // textSize,
+    // setTextSize,
+    previewImage,
+    setFontSize = () => {}
+  } = props;
+
+  let divisionNumber = 2;
+
+  useEffect(() => {
+
+    setTextSize(dimension)
+
+  },[dimension])
+
 useEffect(() => {
 
 interact(".ghost")
   .resizable({
     // resize from all edges and corners
-    edges: { left: true, right: true, bottom: true, top: true },
+    inertia: {
+      resistance: 300,
+      minSpeed: 900,
+      endSpeed: 800
+    },
+    edges: { left: true, right: true, bottom: true, top: true},
 
     listeners: {
       start(event){
@@ -75,12 +106,11 @@ interact(".ghost")
         // update the element's style
         target.style.width = event.rect.width ;
         target.style.height = event.rect.height ;
-        setFontSize(document.querySelector('.ghost').getBoundingClientRect().height/ 2 );
+        setFontSize(document.querySelector('.ghost').getBoundingClientRect().height/ divisionNumber );
         // translate when resizing from top or left edges
         x += event.deltaRect.left;
         y += event.deltaRect.top;
 
-        // target.style.transform = 'translate(' + x + 'px,' + y + 'px)'
         setTextSize({
           width:event.rect.width,
           height:event.rect.height,
@@ -89,13 +119,13 @@ interact(".ghost")
         target.setAttribute("data-x", x);
         target.setAttribute("data-y", y);
       },
-     end(event) {
-        var target = event.target;
-        // target.style.width = 'auto';
-        // target.style.height= 'auto';
-        //     let computedFontSize = document.querySelector('.ghost').getBoundingClientRect().width / 2
-        //     setFontSize(computedFontSize );
-     }
+    //  end(event) {
+    //     var target = event.target;
+    //     // target.style.width = 'auto';
+    //     // target.style.height= 'auto';
+    //     //     let computedFontSize = document.querySelector('.ghost').getBoundingClientRect().width / 2
+    //     //     setFontSize(computedFontSize );
+    //  }
     },
     modifiers: [
       // keep the edges inside the parent
@@ -103,10 +133,13 @@ interact(".ghost")
         outer: "parent",
       }),
 
+      // interact.modifiers.aspectRatio({
+      //   ratio:textSize.width / textSize.height
+      // }),
       // minimum size
       interact.modifiers.restrictSize({
         min: { width: 50, height: 50 },
-        // max: { width: 420 },
+        // max: { width: 200,height:200},
       }),
     ],
 
@@ -121,12 +154,12 @@ interact(".ghost")
         position.y += event.dy;
         event.target.style.transform = `translate(${position.x}px, ${position.y}px)`;
       },
-     end(event) {
-      // event.target.style.height = 'auto'
-      // event.target.style.transform = 'scale(1.8)';
-            // let computedFontSize = document.querySelector('.ghost').getBoundingClientRect().width / 2
-            // setFontSize(computedFontSize );
-     }
+    //  end(event) {
+    //   // event.target.style.height = 'auto'
+    //   // event.target.style.transform = 'scale(1.8)';
+    //         // let computedFontSize = document.querySelector('.ghost').getBoundingClientRect().width / 2
+    //         // setFontSize(computedFontSize );
+    //  }
     },
   });
   interact(".bgCanvas").resizable({
@@ -145,8 +178,8 @@ interact(".ghost")
         // setCanvasWidth(Math.floor(event.rect.width));
         // setCanvasHeight(Math.floor(event.rect.height));
         setCanvasSize({
-          width:Math.floor(event.rect.width),
-          height:Math.floor(event.rect.height),
+          width:event.rect.width,
+          height:event.rect.height,
         })
         // translate when resizing from top or left edges
         x += event.deltaRect.left;
@@ -167,7 +200,7 @@ interact(".ghost")
       // minimum size
       interact.modifiers.restrictSize({
             min: { width: 100, height: 50 },
-            max: { width: 500, height: 360 },
+            // max: { width: 500, height: 360 },
       }),
     ],
 
@@ -175,31 +208,19 @@ interact(".ghost")
   });
 
 }, []);
-  const [selectedUnit, setSlectedUnit] = useState("mm");
+
   const [canvasSize, setCanvasSize] = useState({
-    width: "480",
-    height: "360",
+    width: 661,
+    height: 484,
   });
 
   const [textSize, setTextSize] = useState({
-    width: "249",
-    height: "80",
+    width: 350,
+    height: 150,
   });
 
-  const [fontSize, setFontSize] = useState(80 / 2 + 'pt');
+  // const [fontSize, setFontSize] = useState('');
 
-  const {
-    fontStyle,
-    textColor,
-    pictureText,
-    canvasBackground,
-    signSize,
-    textAlignment,
-    strokeLength,
-    strokeColor,
-    contentRef,
-    previewImage
-  } = props;
   return (
     <Box
       sx={{
@@ -211,8 +232,6 @@ interact(".ghost")
       className="bgCanvas"
     >
 
-      {/* <ReactFitText> */}
-        {/* <ScaleText> */}
 
       <Typography
         className={`ghost ${textAlignment} ${fontStyle} ${textColor} `}
@@ -221,10 +240,8 @@ interact(".ghost")
         sx={{
           width:textSize.width + 'pt',
           height:textSize.height + 'pt',
-          // top:position.x,
-          // left:position.y,
+          maxHeight:`250px`,
           color:'white',
-          // lineHeight:1,
           position: "absolute",
           fontSize: fontSize,
           padding:'5px',
@@ -234,13 +251,9 @@ interact(".ghost")
         }}
       >
         
-        {/* <svg xmlns="http://www.w3.org/2000/svg" style={{width:`${textSize.width}pt`,  height:`${textSize.height}pt`}} viewBox="18.219999313354492 0 49.55999755859375 86"><path stroke="black" fill="red" d="M18.22 86L18.22 0L24.78 0L24.78 86L18.22 86ZM61.22 86L61.22 0L67.78 0L67.78 86L61.22 86Z"></path></svg> */}
-        {/* <span> */}
         {pictureText}
-        {/* </span> */}
       </Typography>
       <img width={"100%"} draggable="off" alt="Canvas" src={canvasBackground} />
-      {/* </Paper> */}
       <Typography textAlign={"center"} sx={{marginBottom:'5px'}}>Select corners to resize the canvas dynamically</Typography>
       <Grid
       container
@@ -248,6 +261,8 @@ interact(".ghost")
         // direction="column"
         sx={{ marginTop: "10px" }}
         justifyContent="start"
+        alignItems="center"
+        gap={1}
       >
         <Grid item xs={5}>
 
@@ -287,7 +302,7 @@ interact(".ghost")
               <select
           value={selectedUnit}
           onChange={(e) => {
-            setSlectedUnit(e.target.value);
+            setSelectedUnit(e.target.value);
           }}
         >
           <option value="mm">Milimeters</option>
@@ -312,7 +327,7 @@ interact(".ghost")
           helperText="Text Width"
           value={convertPointToUnits(textSize.width, selectedUnit)}
           onChange={(e) => {
-
+            setFontSize(document.querySelector('.ghost').clientHeight / divisionNumber );
             setTextSize((o) => ({
               ...o,
               width: convertUnitToPoint(e.target.value, selectedUnit),
@@ -331,7 +346,7 @@ interact(".ghost")
             // let computedFontSize = document.querySelector('.ghost').getBoundingClientRect().width / 2
             // setFontSize(computedFontSize );
 
-        setFontSize(document.querySelector('.ghost').getBoundingClientRect().height/ 2 );
+            setFontSize(document.querySelector('.ghost').clientHeight / divisionNumber );
             setTextSize((o) => ({
               ...o,
               height: convertUnitToPoint(e.target.value, selectedUnit),

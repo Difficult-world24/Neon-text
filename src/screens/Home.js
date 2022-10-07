@@ -59,18 +59,34 @@ const signSizeOptions = [
   {
     title: "Small",
     className: "text-20",
+    fontSize:49,
   },
+
+  // {
+  //   title: "Small",
+  //   className: "text-20",
+  //   fontSize:{
+  //     size:49,
+  //     dimension:{
+  //     width:50,
+  //     height:70,
+  //     }
+  //   },
+  // },
   {
     title: "Medium",
     className: "text-30",
+    fontSize:59,
   },
   {
     title: "Large",
     className: "text-40",
+    fontSize:70,
   },
   {
     title: "Extra-Large",
     className: "text-45",
+    fontSize:84
   },
 ];
 
@@ -81,8 +97,12 @@ function Home() {
   const [strokeLength, setStrokeLength] = useState(0);
   const [textColor, setTextColor] = useState(colorsOptions[0].className);
   const [fontStyle, setFontStyle] = useState(fontsOptions[0].className);
-  const [signSize, setSignSize] = useState(signSizeOptions[0].className);
+  const [signSize, setSignSize] = useState(signSizeOptions[0].fontSize);
+
+  const [dimension, setDimensions] = useState({width:'100%',height:'100%'});
+
   const [previewSrc, setPreview] = useState('');
+  const [selectedUnit, setSelectedUnit] = useState("mm");
   const [canvasBackground, setCanvasBackground] = useState(
     "https://images.unsplash.com/photo-1495578942200-c5f5d2137def?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2950&q=80"
   );
@@ -90,22 +110,27 @@ function Home() {
 
   useEffect(() => {
     takeScreenshot(ref.current);
-  }, [textAlign,textColor,fontStyle,signSize]);
+  }, [textAlign,textColor,fontStyle,dimension]);
 
   const getImage = () =>{
 
-    window.scrollTo(0, document.body.scrollHeight);
    takeScreenshot(ref.current)
       sendImageToServer(image)
       .then(async res=> {
        let base64 =  await res.text()
-       setPreview('data:application/pdf;base64,' + base64)
+       let computedImageUrl = `data:image/png;base64,${base64}`
 
+       setPreview(computedImageUrl)
    })
     .catch(err=> console.log(err))
   }
-  async function sendImageToServer(Base64Url){
-    const response =  await fetch('http://127.0.0.1:5001/', {
+
+
+
+ async function sendImageToServer(Base64Url){
+
+
+    const response =  await fetch(`http://127.0.0.1:5001/?unit=${selectedUnit}`, {
       method: 'POST',
       // mode:'no-cors',
       // headers: {
@@ -116,13 +141,13 @@ function Home() {
       // },
       body: JSON.stringify({neonText:image})
     })
+    console.log(...response.headers)
     return response
    }
-
   const inputRef = useRef(null);
   const ref = useRef();
 
-  const handleFileChange = (event) => {
+  function handleFileChange(event) {
     const fileObj = event.target.files && event.target.files[0];
     if (!fileObj) {
       return;
@@ -130,12 +155,18 @@ function Home() {
     event.target.value = null;
 
     setCanvasBackground(URL.createObjectURL(fileObj));
-  };
+  }
 
-  const handleInputChange = (evt) => {
+  function handleInputChange(evt) {
     const text = evt.target.value;
     setPictureText(text);
-  };
+  }
+
+  function signSizeCallBack(value) {
+    setSignSize(value);
+    setDimensions({ width: '100%', height: '100%' });
+
+  }
 
   return (
     <Grid
@@ -143,7 +174,7 @@ function Home() {
       spacing={0}
       direction="column"
       alignItems="center"
-      justifyContent="center"
+      justifyContent="space-between"
       style={{ minHeight: "100vh" ,paddingTop:'8rem'}}
     >
       <AppBar />
@@ -170,17 +201,21 @@ function Home() {
             contentRef={ref}
             fontStyle={fontStyle}
             textColor={textColor}
-            signSize={signSize}
             canvasBackground={canvasBackground}
             pictureText={pictureText}
             textAlignment={textAlign}
+            fontSize={signSize}
+            dimension={dimension}
+            setFontSize={setSignSize}
             strokeColor={strokeColor}
             strokeLength={strokeLength}
+            setSelectedUnit={setSelectedUnit}
+            selectedUnit={selectedUnit}
             previewImage={
-            <img src={previewSrc} />
+            <img src={previewSrc} width="880" alt="Neon Text With Bounding Box" />
             }
           />
-          <Stack direction="column" spacing={2}>
+          <Stack direction="column"  sx={{width:'17.4rem'}} spacing={2}>
             {/* Picture Text */}
             <TextField
               id="standard-basic"
@@ -194,16 +229,13 @@ function Home() {
               multiline
             />
             <Stack
-              direction={"row"}
-              alignItems={"center"}
+              direction={"column"}
+              alignItems={"start"}
               justifyContent={"space-between"}
             >
               <Typography variant="subtitle1">
-                Max Character Length is 27
+                Max Character Length is 13 
               </Typography>
-              {/* <Typography sx={{marginLeft:'5px'}} variant="subtitle1">
-                Stroke Length is <b>{strokeLength}</b>px
-              </Typography> */}
               <Box>
                 <Button onClick={() => setTextAlign("start")}>
                   <FormatAlignLeftIcon />
@@ -218,11 +250,11 @@ function Home() {
             </Stack>
 
             <Stack
-              direction={"row"}
-              alignItems={"center"}
+              direction={"column"}
+              alignItems={"start"}
               justifyContent={"space-between"}
             >
-              <Typography>Text Stroke</Typography>
+              <Typography marginBottom={1}>Text Stroke</Typography>
               <TextField
                 id="outlined-number"
                 value={strokeLength}
@@ -234,15 +266,10 @@ function Home() {
                   min: 0,
                   max: 20,
                 }}
-                sx={{ width: "80px", height: "50px" }}
+                sx={{ width: "80px", height: "50px",marginBottom:'20px' }}
               />
-              {/* <ColorPicker defaultValue="red" hideTextfield/> */}
-              {/* <ColorButton color="red" />
-            <ColorPicker color="red" /> */}
               <TwitterPicker color={strokeColor}  triangle="hide" onChange={(color)=> setStrokeColor(color.hex)} />
 
-              {/* <input type="number" min="0" max="20" />
-            <label>PX</label> */}
             </Stack>
             {/* Other Options */}
             <NeonAccordion
@@ -258,12 +285,13 @@ function Home() {
               changeButton
             />
 
-            {/* <NeonAccordion
+            <NeonAccordion
               options={signSizeOptions}
-              optionToggle={setSignSize}
+              optionToggle={signSizeCallBack}
               accordionTitle="Size"
               buttonContained
-            /> */}
+              useKey="fontSize"
+            />
 
             {/* <NeonAccordion
             options={['40%','80%']}

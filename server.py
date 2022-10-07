@@ -1,5 +1,4 @@
 # Python 3 server example
-import ast
 import base64
 from cgitb import text
 from http.server import BaseHTTPRequestHandler, HTTPServer
@@ -7,6 +6,8 @@ import json
 import time
 import logging
 from LetterDimension import Compute_Dimension
+from urllib.parse import urlparse
+
 hostName = "localhost"
 serverPort = 5001
 
@@ -24,14 +25,9 @@ class MyServer(BaseHTTPRequestHandler):
         return content.encode("utf8")  # NOTE: must return a bytes object!
 
     def do_POST(self):
-
-        data = json.dumps({'hello': 'world', 'received': 'ok'})
-
-        self.send_response(200)
-        self.send_header("Access-Control-Allow-Origin", "*")
-        self.send_header("Content-type", "application/json")
-        self.send_header("body", data)
-        self.end_headers()
+        query = urlparse(self.path).query
+        query_components = dict(qc.split("=") for qc in query.split("&"))
+        unit = query_components["unit"]
 
         content_length = int(self.headers['Content-Length']) # <--- Gets the size of data
         post_data = self.rfile.read(content_length) # <--- Gets the data itself
@@ -47,12 +43,21 @@ class MyServer(BaseHTTPRequestHandler):
         fh = open("imageToSave.png", "wb")
         fh.write(decoded_data)
         fh.close()
-
+        print("Selected Format" + unit)
         # Computing Dimensions!
-        result = Compute_Dimension("imageToSave.png")
+        result = Compute_Dimension("imageToSave.png",unit)
+        data = json.dumps({'stroke':result})
+
+        self.send_response(200)
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.send_header("Access-Control-Expose-Headers", "Authorization")
+        self.send_header("Content-type", "application/json")
+        self.send_header("body", data)
+        self.end_headers()
         # print(result)
         encoded = base64.b64encode(open("computedImage.png", "rb").read())
         self.wfile.write(encoded)
+        # self.wfile.write(result)
 
 
 
