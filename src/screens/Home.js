@@ -98,9 +98,8 @@ function Home() {
   const [textColor, setTextColor] = useState(colorsOptions[0].className);
   const [fontStyle, setFontStyle] = useState(fontsOptions[0].className);
   const [signSize, setSignSize] = useState(signSizeOptions[0].fontSize);
-
+  const [lettersUrl, setLettersUrl] = useState([])
   const [dimension, setDimensions] = useState({width:'100%',height:'100%'});
-
   const [previewSrc, setPreview] = useState('');
   const [selectedUnit, setSelectedUnit] = useState("mm");
   const [canvasBackground, setCanvasBackground] = useState(
@@ -117,9 +116,11 @@ function Home() {
    takeScreenshot(ref.current)
       sendImageToServer(image)
       .then(async res=> {
-       let base64 =  await res.text()
-       let computedImageUrl = `data:image/png;base64,${base64}`
+       let imageBase64=  await res.json()
+       let computedImageUrl = `data:image/png;base64,${imageBase64.singleImage.replace("b'","").replace("'","")}`
 
+          setLettersUrl(imageBase64.charactersImg.map(item => `data:image/png;base64,${item.replace("b'","").replace("'","")}`))
+        console.log(imageBase64)
        setPreview(computedImageUrl)
    })
     .catch(err=> console.log(err))
@@ -213,6 +214,9 @@ function Home() {
             selectedUnit={selectedUnit}
             previewImage={
             <img src={previewSrc} width="880" alt="Neon Text With Bounding Box" />
+            }
+            lettersPicture={
+              [...lettersUrl]
             }
           />
           <Stack direction="column"  sx={{width:'17.4rem'}} spacing={2}>

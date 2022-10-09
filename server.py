@@ -5,7 +5,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 import time
 import logging
-from LetterDimension import Compute_Dimension
+from _LetterDimension import Compute_Dimension
 from urllib.parse import urlparse
 
 hostName = "localhost"
@@ -46,18 +46,21 @@ class MyServer(BaseHTTPRequestHandler):
         print("Selected Format" + unit)
         # Computing Dimensions!
         result = Compute_Dimension("imageToSave.png",unit)
-        data = json.dumps({'stroke':result})
 
         self.send_response(200)
         self.send_header("Access-Control-Allow-Origin", "*")
         self.send_header("Access-Control-Expose-Headers", "Authorization")
         self.send_header("Content-type", "application/json")
-        self.send_header("body", data)
+        # self.send_header("body", data)
         self.end_headers()
         # print(result)
         encoded = base64.b64encode(open("computedImage.png", "rb").read())
-        self.wfile.write(encoded)
-        # self.wfile.write(result)
+
+        data = json.dumps({'charactersImg':result,'singleImage':str(encoded)})
+
+        # self.wfile.write(bytes(data,'utf-8'))
+        self.wfile.write(data.encode())
+        # self.wfile.write(data)
 
 
 

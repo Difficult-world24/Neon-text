@@ -66,8 +66,7 @@ function Canvas(props) {
     selectedUnit,
     setSelectedUnit,
   dimension,
-    // textSize,
-    // setTextSize,
+  lettersPicture,
     previewImage,
     setFontSize = () => {}
   } = props;
@@ -220,7 +219,7 @@ interact(".ghost")
   });
 
   // const [fontSize, setFontSize] = useState('');
-
+  // console.log(lettersPicture)
   return (
     <Box
       sx={{
@@ -253,7 +252,7 @@ interact(".ghost")
         
         {pictureText}
       </Typography>
-      <img width={"100%"} draggable="off" alt="Canvas" src={canvasBackground} />
+      <img width={"100%"} draggable="off" alt="Canvas" className="bgMain" src={canvasBackground} />
       <Typography textAlign={"center"} sx={{marginBottom:'5px'}}>Select corners to resize the canvas dynamically</Typography>
       <Grid
       container
@@ -356,6 +355,9 @@ interact(".ghost")
         </Grid>
         <Grid item sx={{width:'200px'}}>
         {previewImage}
+        {lettersPicture.map(item => {
+          return  <img style={{margin:'4px'}} src={item} alt="Letter"/>
+        })}
         </Grid>
       </Grid>
     </Box>

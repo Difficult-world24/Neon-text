@@ -5,7 +5,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Bad+Script&display=swap");
 
 
-.neonText {
+/* .neonText {
   color: #fff !important;
   user-select: none;
   letter-spacing: 5px;
@@ -18,9 +18,9 @@
   max-height: 700px;
   resize: horizontal !important;
   margin: 5px !important;
-}
+} */
 
-img {
+.bgMain {
   border-radius: 5px;
   height: 100%;
 }
