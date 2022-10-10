@@ -1,14 +1,12 @@
 # Python 3 server example
 import base64
-from cgitb import text
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
-import time
 import logging
 from _LetterDimension import Compute_Dimension
 from urllib.parse import urlparse
 
-hostName = "localhost"
+hostName = "0.0.0.0"
 serverPort = 5001
 
 class MyServer(BaseHTTPRequestHandler):
@@ -31,9 +29,7 @@ class MyServer(BaseHTTPRequestHandler):
 
         content_length = int(self.headers['Content-Length']) # <--- Gets the size of data
         post_data = self.rfile.read(content_length) # <--- Gets the data itself
-        logging.info("POST request,\nPath: %s\nHeaders:\n%s\n\nBody:\n%s\n",
-                str(self.path), str(self.headers), post_data.decode('utf-8'))
-
+        logging.info("POST request")
         text_imageBase64 = json.loads(post_data.decode('utf-8'))['neonText']
         text_imageBase64 = text_imageBase64.replace('data:image/png;base64,','')
         text_imageBase64 = bytes(text_imageBase64,'utf-8')
@@ -55,9 +51,8 @@ class MyServer(BaseHTTPRequestHandler):
         self.end_headers()
         # print(result)
         encoded = base64.b64encode(open("computedImage.png", "rb").read())
-
         data = json.dumps({'charactersImg':result,'singleImage':str(encoded)})
-
+        data= json.dumps(result)
         # self.wfile.write(bytes(data,'utf-8'))
         self.wfile.write(data.encode())
         # self.wfile.write(data)
