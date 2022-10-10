@@ -150,7 +150,9 @@ function Home() {
 
   async function sendImageToServer(Base64Url) {
     const response = await fetch(
-      `http://127.0.0.1:5001/?unit=${selectedUnit}`,
+      `http://3.109.109.15:5001?unit=${selectedUnit}`,
+
+      // `http://127.0.0.1:5001/?unit=${selectedUnit}`,
       {
         method: 'POST',
         body: JSON.stringify({ neonText: Base64Url }),
