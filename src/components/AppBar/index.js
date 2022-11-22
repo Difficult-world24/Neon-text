@@ -44,9 +44,9 @@ const NavBar = () => {
         >
         </IconButton>
         <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
-                          <Box   >
-                            <img alt='Brnad' style={{width:'60px',height:'51px'}} src={"https://cdn-fmclc.nitrocdn.com/uMyyDaTeGmjluEknOujUvYWGFMpSwciQ/assets/static/optimized/rev-7f1fbe3/wp-content/themes/indy-sign-factory/img/logo.png"} width="240" />
-                          </Box>
+          <Box   >
+            <img alt='Brand' style={{ width: '60px', height: '51px' }} src={"https://cdn-fmclc.nitrocdn.com/uMyyDaTeGmjluEknOujUvYWGFMpSwciQ/assets/static/optimized/rev-725d393/wp-content/themes/indy-sign-factory/img/logo.png"} width="240" />
+          </Box>
         </Typography>
         {auth && (
           <div>

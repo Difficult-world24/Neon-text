@@ -66,7 +66,7 @@ function Canvas(props) {
     dimension,
     charData,
     previewImage,
-    setFontSize = () => {},
+    setFontSize = () => { },
   } = props
 
   let divisionNumber = 2
@@ -102,7 +102,7 @@ function Canvas(props) {
             target.style.height = event.rect.height
             setFontSize(
               document.querySelector('.ghost').getBoundingClientRect().height /
-                divisionNumber
+              divisionNumber
             )
             // translate when resizing from top or left edges
             x += event.deltaRect.left
@@ -224,6 +224,8 @@ function Canvas(props) {
         height: canvasSize.height + 'pt',
         minHeight: '400px',
         minWidth: '400px',
+        maxHeight: '600px',
+        maxWidth: '900px',
       }}
       className='bgCanvas'
     >

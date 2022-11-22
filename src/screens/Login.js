@@ -143,10 +143,10 @@ const Login = () => {
                       onSubmit={onSubmit}
                       ref={(r) => (formRef.current = r)}
                     >
-                      <Box mb={2} display='flex' sx={{display:'flex', justifyContent:'center'}}>
+                      <Box mb={2} display='flex' sx={{ display: 'flex', justifyContent: 'center' }}>
                         <div className='heading'>
                           <Box mb={4} >
-                            <img alt='Brnad' src={"https://cdn-fmclc.nitrocdn.com/uMyyDaTeGmjluEknOujUvYWGFMpSwciQ/assets/static/optimized/rev-7f1fbe3/wp-content/themes/indy-sign-factory/img/logo.png"} width="240" />
+                            <img alt='Brand' src={"https://cdn-fmclc.nitrocdn.com/uMyyDaTeGmjluEknOujUvYWGFMpSwciQ/assets/static/optimized/rev-725d393/wp-content/themes/indy-sign-factory/img/logo.png"} width="240" />
                           </Box>
                           {/* <Typography variant='h3'>Login</Typography> */}
                         </div>
